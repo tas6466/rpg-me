@@ -12,13 +12,22 @@
       margin: 0;
       padding: 0;
     }
+    #thing h1 {
+      margin: var(--ddd-spacing-2);
+      padding: var(--ddd-spacing-6);
+      border-radius: var(--ddd-radius-md);
+      text-align: center;
+      color: var(--ddd-theme-default-white);
+      font-family: var(--ddd-font-secondary);
+      background-color: var(--ddd-theme-default-potential70);
+    }
     #thing {
       margin: var(--ddd-spacing-2);
     }
     rpg-me {
-      margin: var(--ddd-spacing-2);
-      border: var(--ddd-border-md);
-      border-radius: var(--ddd-radius-lg);
+      font-family: var(--ddd-font-secondary);
+      background-color: var(--ddd-theme-default-potential50);
+      border-radius: var(--ddd-radius-md);
     }
     rpg-me:hover {
       box-shadow: var(--ddd-boxShadow-sm);
@@ -29,7 +38,7 @@
 
 <body>
   <div id="thing">
-    <h1>Design a character</h1>
+    <h1>Create your character!</h1>
     <rpg-me></rpg-me>
   </div>
   <script type="module" src="./rpg-me.js"></script>
