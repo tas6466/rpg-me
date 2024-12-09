@@ -88,9 +88,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
         display: flex;
         flex-direction: column;
       }
-
       label {
-        margin-bottom: var(--ddd-spacing-1);
         font-size: var(--ddd-font-size-s);
       }
       wired-combo {
