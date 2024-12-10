@@ -46,46 +46,90 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     css`
       :host {
         display: block;
-        color: var(--ddd-theme-default-white);
+        height: 100vh;
+        margin: 0;
+        padding: var(--ddd-spacing-3);
+        box-sizing: border-box;
+        color: var(--ddd-theme-default-black);
         background-color: var(--ddd-theme-accent);
-        font-family: var(--ddd-font-navigation);
+        font-family: var(--ddd-font-secondary);
       }
       .wrapper {
-        margin: var(--ddd-spacing-2);
-        padding: var(--ddd-spacing-4);
         display: flex;
         flex-direction: row;
+        justify-content: space-around;
+        align-items: stretch;
+        padding: 16px;
+        height: 100vh;
+        box-sizing: border-box;
       }
+
       .character-box {
         flex: 1;
-        margin-right: var(--ddd-spacing-4);
-        padding: var(--ddd-spacing-2);
-        border-radius: var(--ddd-radius-md);
         display: flex;
         flex-direction: column;
-        align-items: center; 
-        justify-content: center; 
+        align-items: center;
+        justify-content: center;
+        padding: var(--ddd-spacing-5);
+        background-color: var(--ddd-theme-default-pughBlue);
+        border-radius: var(--ddd-radius-md);
+        outline-style: double;
+        outline-color: var(--ddd-theme-default-potential70);
+        outline-width: var(--ddd-spacing-4);
       }
+
       rpg-character {
-        transform: scale(2);
+        transform: scale(2.5);
         margin: var(--ddd-spacing-16);
       }
+      .seed {
+        margin-top: var(--ddd-spacing-12);
+      }
+      #share-button {
+        margin-top: var(--ddd-spacing-12);
+        font-size: 18px;
+      }
       .elements-box {
-        text-align: left;
-        padding: var(--ddd-spacing-2);
-        border-radius: var(--ddd-radius-md);
+        flex: 2;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        background-color: var(--ddd-theme-default-skyLight);
+        border-radius: var(--ddd-radius-md);
+        margin-left: var(--ddd-spacing-12);
+        outline-style: double;
+        outline-color: var(--ddd-theme-default-potential70);
+        outline-width: var(--ddd-spacing-4);
+      }
+      table {
+        width: 100%;
+        height: 80%;
+        border-spacing: 20px;
+        table-layout: fixed;
+      }
+      td {
+        vertical-align: top;
+        width: 33%;
       }
       label {
-        font-size: var(--ddd-font-size-s);
+        font-size: 28px;
+        display: block;
+        margin-bottom: 12px;
+        font-family: var(--ddd-font-secondary);
       }
-      wired-combo {
-        color: white;
+      wired-slider, wired-combo, wired-checkbox {
+        width: 100%;
+        height: 40px;
+        margin-bottom: 24px;
+        font-family: var(--ddd-font-secondary);
       }
-      .seed {
-        margin-top: var(--ddd-spacing-4);
-        margin-bottom: var(--ddd-spacing-4);
+      .wired-checkbox {
+        height: auto;
+        margin-top: 16px;
+        margin-bottom: 16px;
+      }
+      wired-item {
+        opacity: 1;
       }
     `];
   }
@@ -95,7 +139,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     <div class="wrapper">
       <div class="character-box">
         <rpg-character
-          .seed="${this.seed}"
+          .seed="${this.characteristics.seed}"
           .accessories="${this.characteristics.accessories}"
           .base="${this.characteristics.base}"
           .leg="${this.characteristics.leg}"
@@ -115,119 +159,91 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
         <div class="seed">Seed: [seed here]</div>
         <wired-button id="share-button">Share</wired-button>
       </div>
+
       <div class="elements-box">
-        <label for="accessories">Accessories</label>
-          <wired-slider 
-            id="accessories" 
-            min="0" 
-            max="10" 
-            step="1"
-            .value="${this.characteristics.accessories}"
-            @change="${(e) => this._onElementChange(e, 'accessories')}">
-          </wired-slider>
-        <label for="base">Base</label>
-          <wired-slider 
-            id="base" 
-            min="1" 
-            max="5" 
-            step="4"
-            .value="${this.characteristics.base}"
-            @change="${(e) => this._onElementChange(e, 'base')}">
-          </wired-slider>
-        <label for="face">Face</label>
-          <wired-slider 
-            id="face" 
-            min="0" 
-            max="5" 
-            step="1"
-            .value="${this.characteristics.face}"
-            @change="${(e) => this._onElementChange(e, 'face')}">
-          </wired-slider>
-        <label for="faceItem">Face Item</label>
-          <wired-slider 
-            id="faceItem" 
-            min="0" 
-            max="10"
-            step="1"
-            .value="${this.characteristics.faceItem}"
-            @change="${(e) => this._onElementChange(e, 'faceItem')}">
-          </wired-slider>
-        <label for="hair">Hair</label>
-          <wired-slider 
-            id="hair" 
-            min="0" 
-            max="10" 
-            step="1"
-            .value="${this.characteristics.hair}"
-            @change="${(e) => this._onElementChange(e, 'hair')}">
-          </wired-slider>
-        <label for="pants">Pants</label>
-          <wired-slider 
-            id="pants" 
-            min="0" 
-            max="10" 
-            step="1"
-            .value="${this.characteristics.pants}"
-            @change="${(e) => this._onElementChange(e, 'pants')}">
-          </wired-slider>
-        <label for="shirt">Shirt</label>
-          <wired-slider 
-            id="shirt" 
-            min="0" 
-            max="10" 
-            step="1"
-            .value="${this.characteristics.shirt}"
-            @change="${(e) => this._onElementChange(e, 'shirt')}">
-          </wired-slider>
-        <label for="skin">Skin</label>
-          <wired-slider 
-            id="skin" 
-            min="0" 
-            max="10" 
-            step="1"
-            .value="${this.characteristics.skin}"
-            @change="${(e) => this._onElementChange(e, 'skin')}">
-          </wired-slider>
-        <label for="hatColor">Hat Color</label>
-          <wired-slider 
-            id="hatColor" 
-            min="0" 
-            max="10" 
-            step="1"
-            .value="${this.characteristics.hatColor}"
-            @change="${(e) => this._onElementChange(e, 'hatColor')}">
-          </wired-slider>
-        <label for="hat">Hat</label>
-          <wired-combo id="hat"
-            .value="${this.characteristics.hat}"
-            @change="${(e) => this._onElementChange(e, 'hat')}">
-            <wired-item value="none">None</wired-item>
-            <wired-item value="bunny">Bunny</wired-item>
-            <wired-item value="coffee">Coffee</wired-item>
-            <wired-item value="construction">Construction</wired-item>
-            <wired-item value="cowboy">Cowboy</wired-item>
-            <wired-item value="education">Education</wired-item>
-            <wired-item value="knight">Knight</wired-item>
-            <wired-item value="ninja">Ninja</wired-item>
-            <wired-item value="party">Party</wired-item>
-            <wired-item value="pirate">Pirate</wired-item>
-            <wired-item value="watermelon">Watermelon</wired-item>
-          </wired-combo>
-        <wired-checkbox 
-          id="fire"
-          .checked="${this.characteristics.fire}"
-          @change="${(e) => this._onCheckboxChange(e, 'fire')}"
-          >On Fire</wired-checkbox>
-        <wired-checkbox 
-          id="walking"
-          .checked="${this.characteristics.walking}"
-          @change="${(e) => this._onCheckboxChange(e, 'walking')}"
-          >Walking</wired-checkbox>
-        <wired-checkbox 
-          id="circle"
-          .checked="${this.characteristics.circle}"
-          @change="${(e) => this._onCheckboxChange(e, 'circle')}"
-        >Circle</wired-checkbox>
+        <table>
+          <tr>
+            <td>
+              <label for="accessories">Accessories</label>
+              <wired-slider id="accessories" min="0" max="9" step="1"
+                .value="${this.characteristics.accessories}"
+                @change="${(e) => this._onElementChange(e, 'accessories')}">
+              </wired-slider>
+
+              <label for="base">Base</label>
+              <wired-slider id="base" min="1" max="5" step="4"
+                .value="${this.characteristics.base}"
+                @change="${(e) => this._onElementChange(e, 'base')}">
+              </wired-slider>
+
+              <label for="face">Face</label>
+              <wired-slider id="face" min="0" max="5" step="1"
+                .value="${this.characteristics.face}"
+                @change="${(e) => this._onElementChange(e, 'face')}">
+              </wired-slider>
+            </td>
+
+            <td>
+              <label for="faceItem">Face Item</label>
+              <wired-slider id="faceItem" min="0" max="9" step="1"
+                .value="${this.characteristics.faceItem}"
+                @change="${(e) => this._onElementChange(e, 'faceItem')}">
+              </wired-slider>
+
+              <label for="hair">Hair Color</label>
+              <wired-slider id="hair" min="0" max="9" step="1"
+                .value="${this.characteristics.hair}"
+                @change="${(e) => this._onElementChange(e, 'hair')}">
+              </wired-slider>
+
+              <label for="pants">Pants</label>
+              <wired-slider id="pants" min="0" max="9" step="1"
+                .value="${this.characteristics.pants}"
+                @change="${(e) => this._onElementChange(e, 'pants')}">
+              </wired-slider>
+            </td>
+
+            <!-- Column 3 -->
+            <td>
+              <label for="shirt">Shirt</label>
+              <wired-slider id="shirt" min="0" max="9" step="1"
+                .value="${this.characteristics.shirt}"
+                @change="${(e) => this._onElementChange(e, 'shirt')}">
+              </wired-slider>
+
+              <label for="hat">Hat</label>
+              <wired-combo id="hat" .value="${this.characteristics.hat}"
+                @change="${(e) => this._onElementChange(e, 'hat')}">
+                <wired-item value="none">None</wired-item>
+                <wired-item value="bunny">Bunny</wired-item>
+                <wired-item value="coffee">Coffee</wired-item>
+                <wired-item value="construction">Construction</wired-item>
+                <wired-item value="cowboy">Cowboy</wired-item>
+                <wired-item value="education">Education</wired-item>
+                <wired-item value="knight">Knight</wired-item>
+                <wired-item value="ninja">Ninja</wired-item>
+                <wired-item value="party">Party</wired-item>
+                <wired-item value="pirate">Pirate</wired-item>
+                <wired-item value="watermelon">Watermelon</wired-item>
+              </wired-combo>
+
+              <wired-checkbox id="fire" .checked="${this.characteristics.fire}"
+                @change="${(e) => this._onCheckboxChange(e, 'fire')}">
+                On Fire
+              </wired-checkbox>
+
+              <wired-checkbox id="walking" .checked="${this.characteristics.walking}"
+                @change="${(e) => this._onCheckboxChange(e, 'walking')}">
+                Walking
+              </wired-checkbox>
+
+              <wired-checkbox id="circle" .checked="${this.characteristics.circle}"
+                @change="${(e) => this._onCheckboxChange(e, 'circle')}">
+                Circle
+              </wired-checkbox>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>`;
   }
