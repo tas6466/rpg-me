@@ -2,6 +2,7 @@ import { LitElement, html, css } from "lit";
 import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
 import "@haxtheweb/rpg-character/rpg-character.js";
+import { WiredButton, WiredInput } from "wired-elements";
 import 'wired-elements/lib/wired-slider.js';
 import 'wired-elements/lib/wired-checkbox.js';
 import 'wired-elements/lib/wired-combo.js';
@@ -105,6 +106,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
           .shirt="${this.characteristics.shirt}"
           .skin="${this.characteristics.skin}"
           .hatColor="${this.characteristics.hatColor}"
+          .hat="${this.characteristics.hat}"
           .walking="${this.characteristics.walking}"
           .speed="${this.characteristics.speed}"
           .circle="${this.characteristics.circle}"
@@ -196,7 +198,9 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
             @change="${(e) => this._onElementChange(e, 'hatColor')}">
           </wired-slider>
         <label for="hat">Hat</label>
-          <wired-combo id="hat">
+          <wired-combo id="hat"
+            .value="${this.characteristics.hat}"
+            @change="${(e) => this._onElementChange(e, 'hat')}">
             <wired-item value="none">None</wired-item>
             <wired-item value="bunny">Bunny</wired-item>
             <wired-item value="coffee">Coffee</wired-item>
@@ -229,7 +233,6 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
   }
 
   _onElementChange(event, prop) {
-    console.log(`Property changed: ${prop}, Value: ${event.target.value}`);
     const slider = event.composedPath()[0];
     const value = slider.value;
     this.characteristics = {
