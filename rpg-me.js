@@ -94,7 +94,20 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     <div class="wrapper">
       <div class="character-box">
         <rpg-character
+          .seed="${this.seed}"
+          .accessories="${this.characteristics.accessories}"
+          .base="${this.characteristics.base}"
+          .leg="${this.characteristics.leg}"
+          .face="${this.characteristics.face}"
+          .faceItem="${this.characteristics.faceItem}"
+          .hair="${this.characteristics.hair}"
+          .pants="${this.characteristics.pants}"
           .shirt="${this.characteristics.shirt}"
+          .skin="${this.characteristics.skin}"
+          .hatColor="${this.characteristics.hatColor}"
+          .walking="${this.characteristics.walking}"
+          .speed="${this.characteristics.speed}"
+          .circle="${this.characteristics.circle}"
           .fire="${this.characteristics.fire}">
         </rpg-character>
         <div class="seed">Seed: [seed here]</div>
@@ -106,42 +119,54 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
             id="accessories" 
             min="0" 
             max="10" 
-            step="1">
+            step="1"
+            .value="${this.characteristics.accessories}"
+            @change="${(e) => this._onElementChange(e, 'accessories')}">
           </wired-slider>
         <label for="base">Base</label>
           <wired-slider 
             id="base" 
             min="1" 
             max="5" 
-            step="4">
+            step="4"
+            .value="${this.characteristics.base}"
+            @change="${(e) => this._onElementChange(e, 'base')}">
           </wired-slider>
         <label for="face">Face</label>
           <wired-slider 
             id="face" 
             min="0" 
             max="5" 
-            step="1">
+            step="1"
+            .value="${this.characteristics.face}"
+            @change="${(e) => this._onElementChange(e, 'face')}">
           </wired-slider>
-        <label for="faceitem">Face Item</label>
+        <label for="faceItem">Face Item</label>
           <wired-slider 
-            id="faceitem" 
+            id="faceItem" 
             min="0" 
             max="10"
-            step="1">
+            step="1"
+            .value="${this.characteristics.faceItem}"
+            @change="${(e) => this._onElementChange(e, 'faceItem')}">
           </wired-slider>
         <label for="hair">Hair</label>
           <wired-slider 
             id="hair" 
             min="0" 
             max="10" 
-            step="1">
+            step="1"
+            .value="${this.characteristics.hair}"
+            @change="${(e) => this._onElementChange(e, 'hair')}">
           </wired-slider>
         <label for="pants">Pants</label>
           <wired-slider 
             id="pants" 
             min="0" 
             max="10" 
-            step="1">
+            step="1"
+            .value="${this.characteristics.pants}"
+            @change="${(e) => this._onElementChange(e, 'pants')}">
           </wired-slider>
         <label for="shirt">Shirt</label>
           <wired-slider 
@@ -150,21 +175,25 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
             max="10" 
             step="1"
             .value="${this.characteristics.shirt}"
-            @change="${(e) => this._onPropertyChange(e, 'shirt')}">
+            @change="${(e) => this._onElementChange(e, 'shirt')}">
           </wired-slider>
         <label for="skin">Skin</label>
           <wired-slider 
             id="skin" 
             min="0" 
             max="10" 
-            step="1">
+            step="1"
+            .value="${this.characteristics.skin}"
+            @change="${(e) => this._onElementChange(e, 'skin')}">
           </wired-slider>
-        <label for="hatcolor">Hat Color</label>
+        <label for="hatColor">Hat Color</label>
           <wired-slider 
-            id="hatcolor" 
+            id="hatColor" 
             min="0" 
             max="10" 
-            step="1">
+            step="1"
+            .value="${this.characteristics.hatColor}"
+            @change="${(e) => this._onElementChange(e, 'hatColor')}">
           </wired-slider>
         <label for="hat">Hat</label>
           <wired-combo id="hat">
@@ -184,14 +213,22 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
           id="fire"
           .checked="${this.characteristics.fire}"
           @change="${(e) => this._onCheckboxChange(e, 'fire')}"
-            >On Fire</wired-checkbox>
-        <wired-checkbox id="walking">Walking</wired-checkbox>
-        <wired-checkbox id="circle">Circle</wired-checkbox>
+          >On Fire</wired-checkbox>
+        <wired-checkbox 
+          id="walking"
+          .checked="${this.characteristics.walking}"
+          @change="${(e) => this._onCheckboxChange(e, 'walking')}"
+          >Walking</wired-checkbox>
+        <wired-checkbox 
+          id="circle"
+          .checked="${this.characteristics.circle}"
+          @change="${(e) => this._onCheckboxChange(e, 'circle')}"
+        >Circle</wired-checkbox>
       </div>
     </div>`;
   }
 
-  _onPropertyChange(event, prop) {
+  _onElementChange(event, prop) {
     console.log(`Property changed: ${prop}, Value: ${event.target.value}`);
     const slider = event.composedPath()[0];
     const value = slider.value;
