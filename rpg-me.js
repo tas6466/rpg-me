@@ -16,39 +16,28 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
 
   constructor() {
     super();
-    this.accessories = "0";
-    this.base = "0";
-    this.leg = "0";
-    this.face = "0";
-    this.faceItem = "0";
-    this.hair = "0";
-    this.pants = "0";
-    this.shirt = "0";
-    this.skin = "0";
-    this.hatColor = "0";
-    this.hat = "none";
-    this.fire = false;
-    this.walking = false;
-    this.circle = false;
+    this.characteristics = {
+      accessories: 0,
+      base: 0,
+      leg: "",
+      face: 0,
+      faceItem: 0,
+      hair: 0,
+      pants: 0,
+      shirt: 0,
+      skin: 0,
+      hatColor: 0,
+      hat: "none",
+      fire: false,
+      walking: false,
+      circle: false
+    };
   }
 
   static get properties() {
     return {
       ...super.properties,
-      accessories: { type: String },
-      base: { type: String },
-      leg: { type: String },
-      face: { type: String },
-      faceItem: { type: String },
-      hair: { type: String },
-      pants: { type: String },
-      shirt: { type: String },
-      skin: { type: String },
-      hatColor: { type: String },
-      hat: { type: String },
-      fire: { type: Boolean },
-      walking: { type: Boolean },
-      circle: { type: Boolean },
+      characteristics: { type: Object }
     };
   }
 
@@ -105,29 +94,78 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     return html`
     <div class="wrapper">
       <div class="character-box">
-        <rpg-character></rpg-character>
+        <rpg-character>
+          .shirt="${this.characteristics.shirt}"
+        </rpg-character>
         <div class="seed">Seed: [seed here]</div>
         <wired-button id="share-button">Share</wired-button>
       </div>
       <div class="elements-box">
         <label for="accessories">Accessories</label>
-          <wired-slider id="accessories" min="0" max="9" step="1"></wired-slider>
+          <wired-slider 
+            id="accessories" 
+            min="0" 
+            max="10" 
+            step="1">
+          </wired-slider>
         <label for="base">Base</label>
-          <wired-slider id="base" min="1" max="5" step="4"></wired-slider>
+          <wired-slider 
+            id="base" 
+            min="1" 
+            max="5" 
+            step="4">
+          </wired-slider>
         <label for="face">Face</label>
-          <wired-slider id="face" min="0" max="5" step="1"></wired-slider>
+          <wired-slider 
+            id="face" 
+            min="0" 
+            max="5" 
+            step="1">
+          </wired-slider>
         <label for="faceitem">Face Item</label>
-          <wired-slider id="faceitem" min="0" max="9" step="1"></wired-slider>
+          <wired-slider 
+            id="faceitem" 
+            min="0" 
+            max="10"
+            step="1">
+          </wired-slider>
         <label for="hair">Hair</label>
-          <wired-slider id="hair" min="0" max="9" step="1"></wired-slider>
+          <wired-slider 
+            id="hair" 
+            min="0" 
+            max="10" 
+            step="1">
+          </wired-slider>
         <label for="pants">Pants</label>
-          <wired-slider id="pants" min="0" max="9" step="1"></wired-slider>
+          <wired-slider 
+            id="pants" 
+            min="0" 
+            max="10" 
+            step="1">
+          </wired-slider>
         <label for="shirt">Shirt</label>
-          <wired-slider id="shirt" min="0" max="9" step="1"></wired-slider>
+          <wired-slider 
+            id="shirt" 
+            min="0" 
+            max="10" 
+            step="1"
+            .value="${this.characteristics.shirt}"
+            @change="${(e) => this._onPropertyChange(e, 'shirt')}">
+          </wired-slider>
         <label for="skin">Skin</label>
-          <wired-slider id="skin" min="0" max="9" step="1"></wired-slider>
+          <wired-slider 
+            id="skin" 
+            min="0" 
+            max="10" 
+            step="1">
+          </wired-slider>
         <label for="hatcolor">Hat Color</label>
-          <wired-slider id="hatcolor" min="0" max="9" step="1"></wired-slider>
+          <wired-slider 
+            id="hatcolor" 
+            min="0" 
+            max="10" 
+            step="1">
+          </wired-slider>
         <label for="hat">Hat</label>
           <wired-combo id="hat">
             <wired-item value="none">None</wired-item>
@@ -147,6 +185,16 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
         <wired-checkbox id="circle">Circle</wired-checkbox>
       </div>
     </div>`;
+  }
+
+  _onPropertyChange(event, prop) {
+    console.log(`Property changed: ${prop}, Value: ${event.target.value}`);
+    const value = event.target.value;
+    this.characteristics = {
+      ...this.characteristics,
+      [prop]: parseInt(value, 10),
+    };
+    this.requestUpdate(); // Re-render component
   }
 
   static get haxProperties() {
