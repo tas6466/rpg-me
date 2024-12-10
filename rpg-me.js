@@ -194,7 +194,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
       ...this.characteristics,
       [prop]: parseInt(value, 10),
     };
-    this.requestUpdate(); // Re-render component
+    this.requestUpdate();
   }
 
   static get haxProperties() {
