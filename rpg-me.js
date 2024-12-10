@@ -2,7 +2,6 @@ import { LitElement, html, css } from "lit";
 import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
 import "@haxtheweb/rpg-character/rpg-character.js";
-import { WiredButton, WiredInput } from "wired-elements";
 import 'wired-elements/lib/wired-slider.js';
 import 'wired-elements/lib/wired-checkbox.js';
 import 'wired-elements/lib/wired-combo.js';
@@ -94,8 +93,9 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     return html`
     <div class="wrapper">
       <div class="character-box">
-        <rpg-character>
+        <rpg-character
           .shirt="${this.characteristics.shirt}"
+          .fire="${this.characteristics.fire}">
         </rpg-character>
         <div class="seed">Seed: [seed here]</div>
         <wired-button id="share-button">Share</wired-button>
@@ -180,7 +180,11 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
             <wired-item value="pirate">Pirate</wired-item>
             <wired-item value="watermelon">Watermelon</wired-item>
           </wired-combo>
-        <wired-checkbox id="fire">On Fire</wired-checkbox>
+        <wired-checkbox 
+          id="fire"
+          .checked="${this.characteristics.fire}"
+          @change="${(e) => this._onCheckboxChange(e, 'fire')}"
+            >On Fire</wired-checkbox>
         <wired-checkbox id="walking">Walking</wired-checkbox>
         <wired-checkbox id="circle">Circle</wired-checkbox>
       </div>
@@ -189,10 +193,20 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
 
   _onPropertyChange(event, prop) {
     console.log(`Property changed: ${prop}, Value: ${event.target.value}`);
-    const value = event.target.value;
+    const slider = event.composedPath()[0];
+    const value = slider.value;
     this.characteristics = {
       ...this.characteristics,
       [prop]: parseInt(value, 10),
+    };
+    this.requestUpdate();
+  }
+
+  _onCheckboxChange(event, prop) {
+    const checkbox = event.target;
+    this.characteristics = {
+      ...this.characteristics,
+      [prop]: checkbox.checked,
     };
     this.requestUpdate();
   }
