@@ -47,8 +47,6 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     css`
       :host {
         display: block;
-        margin: var(--ddd-spacing-0);
-        padding: var(--ddd-spacing-3);
         color: var(--ddd-theme-default-black);
         background-color: var(--ddd-theme-accent);
         font-family: var(--ddd-font-secondary);
@@ -63,24 +61,23 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: var(--ddd-spacing-5);
+        padding: var(--ddd-spacing-4);
         background-color: var(--ddd-theme-default-pughBlue);
         border-radius: var(--ddd-radius-md);
         outline-style: double;
         outline-color: var(--ddd-theme-default-potential70);
         outline-width: var(--ddd-spacing-4);
+        box-sizing: border-box;
       }
       rpg-character {
         transform: scale(2.5);
-        margin-top: var(--ddd-spacing-40);
-        margin: var(--ddd-spacing-18);
+        margin: var(--ddd-spacing-24);
       }
-      .seed {
-        margin-top: var(--ddd-spacing-12);
+      .seed, #share-button, a {
+        padding: var(--ddd-spacing-2);
       }
       #share-button {
-        margin-top: var(--ddd-spacing-4);
-        font-size: var(--ddd-font-size-sm);
+        font-size: var(--ddd-font-size-md);
       }
       .elements-box {
         flex: 2;
@@ -153,6 +150,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
         </rpg-character>
         <div class="seed">Seed: ${this.characteristics.seed}</div>
         <wired-button id="share-button">Share</wired-button>
+        <a href="https://github.com/haxtheweb/issues/issues/1414" target="_blank">Issue</a>
       </div>
       <div class="elements-box">
         <table>
@@ -163,7 +161,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
                   .value="${this.characteristics.accessories}"
                   @change="${(e) => this._onElementChange(e, 'accessories')}">
                 </wired-slider>
-              <label for="base">Base</label>
+              <label for="base">Hair</label>
                 <wired-slider id="base" min="1" max="5" step="4"
                   .value="${this.characteristics.base}"
                   @change="${(e) => this._onElementChange(e, 'base')}">
