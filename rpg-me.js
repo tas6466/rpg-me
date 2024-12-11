@@ -38,7 +38,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
   static get properties() {
     return {
       ...super.properties,
-      characteristics: { type: Object }
+      characteristics: { type: Object },
     };
   }
 
@@ -162,7 +162,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
                   @change="${(e) => this._onElementChange(e, 'accessories')}">
                 </wired-slider>
               <label for="base">Hair</label>
-                <wired-slider id="base" min="1" max="5" step="4"
+                <wired-slider id="base" min="0" max="1" step="1"
                   .value="${this.characteristics.base}"
                   @change="${(e) => this._onElementChange(e, 'base')}">
                 </wired-slider>
