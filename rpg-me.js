@@ -46,22 +46,15 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     css`
       :host {
         display: block;
-        height: 100vh;
-        margin: 0;
+        margin: var(--ddd-spacing-0);
         padding: var(--ddd-spacing-3);
-        box-sizing: border-box;
         color: var(--ddd-theme-default-black);
         background-color: var(--ddd-theme-accent);
         font-family: var(--ddd-font-secondary);
       }
       .wrapper {
         display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: stretch;
-        padding: 16px;
-        height: 100vh;
-        box-sizing: border-box;
+        padding: var(--ddd-spacing-4);
       }
       .character-box {
         flex: 1;
@@ -78,14 +71,15 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
       }
       rpg-character {
         transform: scale(2.5);
-        margin: var(--ddd-spacing-16);
+        margin-top: var(--ddd-spacing-40);
+        margin: var(--ddd-spacing-18);
       }
       .seed {
         margin-top: var(--ddd-spacing-12);
       }
       #share-button {
         margin-top: var(--ddd-spacing-4);
-        font-size: 18px;
+        font-size: var(--ddd-font-size-sm);
       }
       .elements-box {
         flex: 2;
@@ -102,7 +96,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
       table {
         width: 100%;
         height: 80%;
-        border-spacing: 20px;
+        border-spacing: var(--ddd-spacing-5);
         table-layout: fixed;
       }
       td {
@@ -113,7 +107,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
       label {
         font-size: 28px;
         display: block;
-        margin-bottom: 12px;
+        margin-bottom: var(--ddd-spacing-3);
         font-family: var(--ddd-font-secondary);
       }
       wired-slider, wired-combo {
