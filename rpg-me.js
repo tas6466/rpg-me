@@ -17,6 +17,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
   constructor() {
     super();
     this.characteristics = {
+      seed: "0000000000",
       accessories: 0,
       base: 0,
       leg: "",
@@ -150,7 +151,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
           .circle="${this.characteristics.circle}"
           .fire="${this.characteristics.fire}">
         </rpg-character>
-        <div class="seed">Seed: [seed here]</div>
+        <div class="seed">Seed: ${this.characteristics.seed}</div>
         <wired-button id="share-button">Share</wired-button>
       </div>
       <div class="elements-box">
@@ -172,6 +173,15 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
                   .value="${this.characteristics.face}"
                   @change="${(e) => this._onElementChange(e, 'face')}">
                 </wired-slider>
+                <wired-checkbox id="fire" .checked="${this.characteristics.fire}"
+                  @change="${(e) => this._onCheckboxChange(e, 'fire')}">On Fire
+                </wired-checkbox>
+                <wired-checkbox id="walking" .checked="${this.characteristics.walking}"
+                  @change="${(e) => this._onCheckboxChange(e, 'walking')}">Walking
+                </wired-checkbox>
+                <wired-checkbox id="circle" .checked="${this.characteristics.circle}"
+                  @change="${(e) => this._onCheckboxChange(e, 'circle')}">Circle
+                </wired-checkbox>
             </td>
             <td>
               <label for="faceItem">Face Item</label>
@@ -189,13 +199,13 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
                   .value="${this.characteristics.pants}"
                   @change="${(e) => this._onElementChange(e, 'pants')}">
                 </wired-slider>
+              <label for="hatColor">Hat Color</label>
+                <wired-slider id="hatColor" min="0" max="9" step="1"
+                  .value="${this.characteristics.hatColor}"
+                  @change="${(e) => this._onElementChange(e, 'hatColor')}">
+                </wired-slider>  
             </td>
             <td>
-              <label for="shirt">Shirt</label>
-                <wired-slider id="shirt" min="0" max="9" step="1"
-                  .value="${this.characteristics.shirt}"
-                  @change="${(e) => this._onElementChange(e, 'shirt')}">
-                </wired-slider>
               <label for="hat">Hat</label>
                 <wired-combo id="hat" .value="${this.characteristics.hat}"
                   @change="${(e) => this._onElementChange(e, 'hat')}">
@@ -211,15 +221,16 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
                   <wired-item value="pirate">Pirate</wired-item>
                   <wired-item value="watermelon">Watermelon</wired-item>
                 </wired-combo>
-                <wired-checkbox id="fire" .checked="${this.characteristics.fire}"
-                  @change="${(e) => this._onCheckboxChange(e, 'fire')}">On Fire
-                </wired-checkbox>
-                <wired-checkbox id="walking" .checked="${this.characteristics.walking}"
-                  @change="${(e) => this._onCheckboxChange(e, 'walking')}">Walking
-                </wired-checkbox>
-                <wired-checkbox id="circle" .checked="${this.characteristics.circle}"
-                  @change="${(e) => this._onCheckboxChange(e, 'circle')}">Circle
-                </wired-checkbox>
+                <label for="shirt">Shirt</label>
+                <wired-slider id="shirt" min="0" max="9" step="1"
+                  .value="${this.characteristics.shirt}"
+                  @change="${(e) => this._onElementChange(e, 'shirt')}">
+                </wired-slider>
+                <label for="skin">Skin</label>
+                <wired-slider id="skin" min="0" max="9" step="1"
+                  .value="${this.characteristics.skin}"
+                  @change="${(e) => this._onElementChange(e, 'skin')}">
+                </wired-slider>
             </td>
           </tr>
         </table>
@@ -228,6 +239,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
   }
 
   _onElementChange(event, prop) {
+    event.stopPropagation();
     const slider = event.composedPath()[0];
     const value = slider.value;
     this.characteristics = {
