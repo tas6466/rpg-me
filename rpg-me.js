@@ -19,7 +19,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     this.characteristics = {
       seed: "0000000000",
       accessories: 0,
-      base: 0,
+      base: 1,
       leg: "",
       face: 0,
       faceItem: 0,
