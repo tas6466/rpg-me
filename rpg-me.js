@@ -31,6 +31,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     this.walking = false;
     this.circle = false;
     this.seed = "0000000000";
+    this.scale = 2.5;
     this._applySeed();
   }
 
@@ -52,6 +53,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
       walking: { type: Boolean },
       circle: { type: Boolean },
       seed: { type: String },
+      scale: { type: Number },
     };
   }
 
@@ -63,6 +65,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
         color: var(--ddd-theme-default-coalyGray);
         background-color: var(--ddd-theme-accent);
         font-family: var(--ddd-font-secondary);
+        --rpg-character-scale: 2.5;
       }
       .wrapper {
         display: flex;
@@ -83,8 +86,8 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
         box-sizing: border-box;
       }
       rpg-character {
-        transform: scale(2.5);
-        margin: var(--ddd-spacing-24);
+        transform: scale(var(--rpg-character-scale, 2.5));
+        margin: var(--ddd-spacing-28);
       }
       .seed, #share-button, a {
         padding: var(--ddd-spacing-2);
@@ -109,6 +112,39 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
         height: 80%;
         border-spacing: var(--ddd-spacing-5);
         table-layout: fixed;
+      }
+      @media screen and (max-width: 768px) {
+        .wrapper {
+          flex-direction: column;
+          padding: var(--ddd-spacing-2);
+        }
+        .character-box, .elements-box {
+          margin: var(--ddd-spacing-2) 0;
+          width: 100%;
+        }
+        table {
+          display: flex;
+          flex-direction: column;
+        }
+        table tr {
+          display: flex;
+          flex-direction: column;
+        }
+        table td {
+          width: 100%;
+          margin-bottom: var(--ddd-spacing-4);
+        }
+        rpg-character {
+          transform: scale(1.5);
+          margin: var(--ddd-spacing-10);
+        }
+        label {
+          font-size: 20px;
+        }
+        wired-slider, wired-combo {
+          width: 100%;
+          height: var(--ddd-spacing-8);
+        }
       }
       td {
         vertical-align: top;
@@ -159,6 +195,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     <div class="wrapper">
       <div class="character-box">
         <rpg-character
+          style="--rpg-character-scale: ${this.scale}"
           .accessories="${this.accessories}"
           .base="${this.base}"
           .leg="${this.leg}"
@@ -184,7 +221,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
           <tr>
             <td>
               <label for="accessories">Accessories</label>
-                <wired-slider id="accessories" .value="${this.accessories}" min="0" max="9"  
+                <wired-slider id="accessories" .value="0" min="0" max="9"  
                   @change="${(e) => this._updateSetting('accessories', parseInt(e.detail.value))}">
                 </wired-slider>
                 <label for="base">Hair</label>
@@ -248,6 +285,10 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
                 <wired-slider id="skin" .value="${this.skin}" min="0" max="9"
                   @change="${(e) => this._updateSetting('skin', parseInt(e.detail.value))}">
                 </wired-slider>
+                <label for="scale">Size</label>
+                <wired-slider id="scale" .value="${this.size}" min="1" max="3" step=".5"
+                  @change="${(e) => this._updateSetting('scale', parseFloat(e.detail.value))}">
+                </wired-slider>
             </td>
           </tr>
         </table>
@@ -307,6 +348,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
 
   connectedCallback() {
     super.connectedCallback();
+    window.addEventListener('resize', this._handleResize.bind(this));
     const params = new URLSearchParams(window.location.search);
 
     if (params.has("seed")) {
@@ -314,6 +356,10 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
       this._applySeed();
     }
     this.requestUpdate();
+  }
+
+  _handleResize() {
+    this.isMobile = window.innerWidth <= 768;
   }
 
   static get haxProperties() {
