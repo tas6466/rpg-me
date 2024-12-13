@@ -113,39 +113,6 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
         border-spacing: var(--ddd-spacing-5);
         table-layout: fixed;
       }
-      @media screen and (max-width: 768px) {
-        .wrapper {
-          flex-direction: column;
-          padding: var(--ddd-spacing-2);
-        }
-        .character-box, .elements-box {
-          margin: var(--ddd-spacing-2) 0;
-          width: 100%;
-        }
-        table {
-          display: flex;
-          flex-direction: column;
-        }
-        table tr {
-          display: flex;
-          flex-direction: column;
-        }
-        table td {
-          width: 100%;
-          margin-bottom: var(--ddd-spacing-4);
-        }
-        rpg-character {
-          transform: scale(1.5);
-          margin: var(--ddd-spacing-10);
-        }
-        label {
-          font-size: 20px;
-        }
-        wired-slider, wired-combo {
-          width: 100%;
-          height: var(--ddd-spacing-8);
-        }
-      }
       td {
         vertical-align: top;
         width: 33%;
@@ -348,7 +315,6 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
 
   connectedCallback() {
     super.connectedCallback();
-    window.addEventListener('resize', this._handleResize.bind(this));
     const params = new URLSearchParams(window.location.search);
 
     if (params.has("seed")) {
@@ -356,10 +322,6 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
       this._applySeed();
     }
     this.requestUpdate();
-  }
-
-  _handleResize() {
-    this.isMobile = window.innerWidth <= 768;
   }
 
   static get haxProperties() {
