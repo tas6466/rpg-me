@@ -70,6 +70,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
       .wrapper {
         display: flex;
         padding: var(--ddd-spacing-4);
+        flex-wrap: wrap;
       }
       .character-box {
         flex: 1;
@@ -154,6 +155,25 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
         .notification.show {
           opacity: 1;
         }
+        @media (max-width: 768px) {
+      .wrapper {
+        flex-direction: column; /* Stack items vertically */
+        padding: var(--ddd-spacing-2);
+      }
+      .elements-box {
+        margin-left: 0; /* Remove extra margin on smaller screens */
+        margin-top: var(--ddd-spacing-4); /* Add spacing between sections */
+      }
+      rpg-character {
+        transform: scale(1.5); /* Reduce character size for smaller screens */
+      }
+      table td {
+        width: 100%; /* Make each column full width on mobile */
+      }
+      label {
+        font-size: 20px; /* Adjust label size for smaller screens */
+      }
+    }
     `];
   }
 
@@ -188,15 +208,15 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
           <tr>
             <td>
               <label for="accessories">Accessories</label>
-                <wired-slider id="accessories" .value="0" min="0" max="9"  
+                <wired-slider id="accessories" value="0" min="0" max="9"  
                   @change="${(e) => this._updateSetting('accessories', parseInt(e.detail.value))}">
                 </wired-slider>
                 <label for="base">Hair</label>
-                <wired-slider id="base" .value="${this.base}" min="0" max="1" 
+                <wired-slider id="base" value="0" min="0" max="1" 
                   @change="${(e) => this._updateSetting('base', parseInt(e.detail.value))}">
                 </wired-slider>
               <label for="face">Face</label>
-                <wired-slider id="face" .value="${this.face}" min="0" max="5" 
+                <wired-slider id="face" value="0" min="0" max="5" 
                   @change="${(e) => this._updateSetting('face', parseInt(e.detail.value))}">
                 </wired-slider>
                 <wired-checkbox id="fire" ?checked="${this.fire === 1}"
@@ -211,20 +231,19 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
             </td>
             <td>
               <label for="faceItem">Face Item</label>
-                <wired-slider id="faceItem" .value="${this.faceItem}" min="0" max="9"
+                <wired-slider id="faceItem" value="0" min="0" max="9"
                   @change="${(e) => this._updateSetting('faceItem', parseInt(e.detail.value))}">
                 </wired-slider>
               <label for="hair">Hair Color</label>
-                <wired-slider id="hair" .value="${this.hair}" min="0" max="9"
+                <wired-slider id="hair" value="0" min="0" max="9"
                   @change="${(e) => this._updateSetting('hair', parseInt(e.detail.value))}">
                 </wired-slider>
               <label for="pants">Pants</label>
-                <wired-slider id="pants" min="0" max="9" step="1"
-                  .value="${this.pants}"
+                <wired-slider id="pants" value="0" min="0" max="9" step="1"
                   @change="${(e) => this._updateSetting('pants', parseInt(e.detail.value))}">
                 </wired-slider>
               <label for="hatColor">Hat Color</label>
-                <wired-slider id="hatColor" .value="${this.hatColor}" min="0" max="9"
+                <wired-slider id="hatColor" value="0" min="0" max="9"
                   @change="${(e) => this._updateSetting('hatColor', parseInt(e.detail.value))}">
                 </wired-slider>  
             </td>
@@ -245,15 +264,15 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
                   <wired-item value="watermelon">Watermelon</wired-item>
                 </wired-combo>
                 <label for="shirt">Shirt</label>
-                <wired-slider id="shirt" .value="${this.shirt}" min="0" max="9"
+                <wired-slider id="shirt" value="0" min="0" max="9"
                   @change="${(e) => this._updateSetting('shirt', parseInt(e.detail.value))}">
                 </wired-slider>
                 <label for="skin">Skin</label>
-                <wired-slider id="skin" .value="${this.skin}" min="0" max="9"
+                <wired-slider id="skin" value="0" min="0" max="9"
                   @change="${(e) => this._updateSetting('skin', parseInt(e.detail.value))}">
                 </wired-slider>
                 <label for="scale">Size</label>
-                <wired-slider id="scale" .value="${this.size}" min="1" max="3" step=".5"
+                <wired-slider id="scale" value="2.5" min="1" max="3" step=".5"
                   @change="${(e) => this._updateSetting('scale', parseFloat(e.detail.value))}">
                 </wired-slider>
             </td>
