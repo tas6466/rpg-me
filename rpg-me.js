@@ -120,7 +120,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
         font-family: var(--ddd-font-secondary);
       }
       label {
-        font-size: 28px;
+        font-size: var(--ddd-font-size-ms);
         display: block;
         margin-bottom: var(--ddd-spacing-3);
         font-family: var(--ddd-font-secondary);
@@ -156,24 +156,24 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
           opacity: 1;
         }
         @media (max-width: 768px) {
-      .wrapper {
-        flex-direction: column; /* Stack items vertically */
-        padding: var(--ddd-spacing-2);
-      }
-      .elements-box {
-        margin-left: 0; /* Remove extra margin on smaller screens */
-        margin-top: var(--ddd-spacing-4); /* Add spacing between sections */
-      }
-      rpg-character {
-        transform: scale(1.5); /* Reduce character size for smaller screens */
-      }
-      table td {
-        width: 100%; /* Make each column full width on mobile */
-      }
-      label {
-        font-size: 20px; /* Adjust label size for smaller screens */
-      }
-    }
+          .wrapper {
+            flex-direction: column;
+            padding: var(--ddd-spacing-2);
+          }
+          .elements-box {
+            margin-left: var(--ddd-spacing-0);
+            margin-top: var(--ddd-spacing-4);
+          }
+          rpg-character {
+            transform: scale(1.5);
+          }
+          table td {
+            width: 100%;
+          }
+          label {
+            font-size: var(--ddd-font-size-xxs);
+          }
+        }
     `];
   }
 
