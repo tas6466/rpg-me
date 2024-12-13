@@ -19,7 +19,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     this.characteristics = {
       seed: "0000000000",
       accessories: 0,
-      base: 1,
+      base: 0,
       leg: "",
       face: 0,
       faceItem: 0,
@@ -33,6 +33,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
       walking: false,
       circle: false
     };
+    this._applySeed(); 
   }
 
   static get properties() {
@@ -111,18 +112,35 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
       wired-slider, wired-combo {
         width: 100%;
         height: 40px;
-        margin-bottom: 24px;
+        margin-bottom: var(--ddd-spacing-6);
         font-family: var(--ddd-font-secondary);
       }
-      .wired-checkbox {
+      wired-checkbox {
         height: auto;
-        margin-top: 16px;
-        margin-bottom: 16px;
+        margin-top: var(--ddd-spacing-4);
+        margin-bottom: var(--ddd-spacing-4);
         font-family: var(--ddd-font-secondary);
       }
       wired-item {
         opacity: 1;
       }
+      .notification {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background-color: #28a745;
+          color: white;
+          padding: 10px 15px;
+          border-radius: 5px;
+          font-size: 14px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+          opacity: 0;
+          transition: opacity 0.5s ease-in-out;
+          z-index: 1000;
+        }
+        .notification.show {
+          opacity: 1;
+        }
     `];
   }
 
@@ -131,7 +149,6 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     <div class="wrapper">
       <div class="character-box">
         <rpg-character
-          .seed="${this.characteristics.seed}"
           .accessories="${this.characteristics.accessories}"
           .base="${this.characteristics.base}"
           .leg="${this.characteristics.leg}"
@@ -149,64 +166,59 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
           .fire="${this.characteristics.fire}">
         </rpg-character>
         <div class="seed">Seed: ${this.characteristics.seed}</div>
-        <wired-button id="share-button">Share</wired-button>
+        <wired-button id="share-button" @click="${this._generateLink}">Share</wired-button>
         <a href="https://github.com/haxtheweb/issues/issues/1414" target="_blank">Issue</a>
       </div>
+      <div id="notification" class="notification"></div>
       <div class="elements-box">
         <table>
           <tr>
             <td>
               <label for="accessories">Accessories</label>
-                <wired-slider id="accessories" min="0" max="9" step="1"
-                  .value="${this.characteristics.accessories}"
-                  @change="${(e) => this._onElementChange(e, 'accessories')}">
+                <wired-slider id="accessories" .value="${this.characteristics.accessories}" min="0" max="9"  
+                  @change="${(e) => this._updateSetting('accessories', parseInt(e.detail.value))}">
                 </wired-slider>
-              <label for="base">Hair</label>
-                <wired-slider id="base" min="0" max="1" step="1"
-                  .value="${this.characteristics.base}"
-                  @change="${(e) => this._onElementChange(e, 'base')}">
+                <label for="base">Hair</label>
+                <wired-slider id="base" .value="${this.characteristics.base}" min="0" max="1" 
+                  @change="${(e) => this._updateSetting('base', parseInt(e.detail.value))}">
                 </wired-slider>
               <label for="face">Face</label>
-                <wired-slider id="face" min="0" max="5" step="1"
-                  .value="${this.characteristics.face}"
-                  @change="${(e) => this._onElementChange(e, 'face')}">
+                <wired-slider id="face" .value="${this.characteristics.face}" min="0" max="5" 
+                  @change="${(e) => this._updateSetting('face', parseInt(e.detail.value))}">
                 </wired-slider>
-                <wired-checkbox id="fire" .checked="${this.characteristics.fire}"
-                  @change="${(e) => this._onCheckboxChange(e, 'fire')}">On Fire
+                <wired-checkbox id="fire" ?checked="${this.characteristics.fire === 1}"
+                  @change="${(e) => this._updateSetting('fire', e.target.checked ? 1 : 0)}">On Fire
                 </wired-checkbox>
-                <wired-checkbox id="walking" .checked="${this.characteristics.walking}"
-                  @change="${(e) => this._onCheckboxChange(e, 'walking')}">Walking
+                <wired-checkbox id="walking" ?checked="${this.characteristics.walking === 1}"
+                  @change="${(e) => this._updateSetting('walking', e.target.checked ? 1 : 0)}">Walking
                 </wired-checkbox>
-                <wired-checkbox id="circle" .checked="${this.characteristics.circle}"
-                  @change="${(e) => this._onCheckboxChange(e, 'circle')}">Circle
+                <wired-checkbox id="circle" ?checked="${this.characteristics.circle === 1}"
+                  @change="${(e) => this._updateSetting('circle', e.target.checked ? 1 : 0)}">Circle
                 </wired-checkbox>
             </td>
             <td>
               <label for="faceItem">Face Item</label>
-                <wired-slider id="faceItem" min="0" max="9" step="1"
-                  .value="${this.characteristics.faceItem}"
-                  @change="${(e) => this._onElementChange(e, 'faceItem')}">
+                <wired-slider id="faceItem" .value="${this.characteristics.faceItem}" min="0" max="9"
+                  @change="${(e) => this._updateSetting('faceItem', parseInt(e.detail.value))}">
                 </wired-slider>
               <label for="hair">Hair Color</label>
-                <wired-slider id="hair" min="0" max="9" step="1"
-                  .value="${this.characteristics.hair}"
-                  @change="${(e) => this._onElementChange(e, 'hair')}">
+                <wired-slider id="hair" .value="${this.characteristics.hair}" min="0" max="9"
+                  @change="${(e) => this._updateSetting('hair', parseInt(e.detail.value))}">
                 </wired-slider>
               <label for="pants">Pants</label>
                 <wired-slider id="pants" min="0" max="9" step="1"
                   .value="${this.characteristics.pants}"
-                  @change="${(e) => this._onElementChange(e, 'pants')}">
+                  @change="${(e) => this._updateSetting('pants', parseInt(e.detail.value))}">
                 </wired-slider>
               <label for="hatColor">Hat Color</label>
-                <wired-slider id="hatColor" min="0" max="9" step="1"
-                  .value="${this.characteristics.hatColor}"
-                  @change="${(e) => this._onElementChange(e, 'hatColor')}">
+                <wired-slider id="hatColor" .value="${this.characteristics.hatColor}" min="0" max="9"
+                  @change="${(e) => this._updateSetting('hatColor', parseInt(e.detail.value))}">
                 </wired-slider>  
             </td>
             <td>
               <label for="hat">Hat</label>
                 <wired-combo id="hat" .value="${this.characteristics.hat}"
-                  @change="${(e) => this._onElementChange(e, 'hat')}">
+                @change="${(e) => this._updateSetting('hat', parseInt(e.detail.value))}">
                   <wired-item value="none">None</wired-item>
                   <wired-item value="bunny">Bunny</wired-item>
                   <wired-item value="coffee">Coffee</wired-item>
@@ -220,14 +232,12 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
                   <wired-item value="watermelon">Watermelon</wired-item>
                 </wired-combo>
                 <label for="shirt">Shirt</label>
-                <wired-slider id="shirt" min="0" max="9" step="1"
-                  .value="${this.characteristics.shirt}"
-                  @change="${(e) => this._onElementChange(e, 'shirt')}">
+                <wired-slider id="shirt" .value="${this.characteristics.shirt}" min="0" max="9"
+                  @change="${(e) => this._updateSetting('shirt', parseInt(e.detail.value))}">
                 </wired-slider>
                 <label for="skin">Skin</label>
-                <wired-slider id="skin" min="0" max="9" step="1"
-                  .value="${this.characteristics.skin}"
-                  @change="${(e) => this._onElementChange(e, 'skin')}">
+                <wired-slider id="skin" .value="${this.characteristics.skin}" min="0" max="9"
+                  @change="${(e) => this._updateSetting('skin', parseInt(e.detail.value))}">
                 </wired-slider>
             </td>
           </tr>
@@ -236,23 +246,67 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     </div>`;
   }
 
-  _onElementChange(event, prop) {
-    event.stopPropagation();
-    const slider = event.composedPath()[0];
-    const value = slider.value;
-    this.characteristics = {
-      ...this.characteristics,
-      [prop]: parseInt(value, 10),
-    };
+  _applySeed() {
+    const seed = this.characteristics.seed;
+    const paddedSeed = seed.padStart(10, "0").slice(0, 10);
+    const values = paddedSeed.split("").map((v) => parseInt(v, 10));
+  
+    [
+      this.characteristics.accessories,
+      this.characteristics.base,
+      this.characteristics.leg,
+      this.characteristics.face,
+      this.characteristics.faceItem,
+      this.characteristics.hair,
+      this.characteristics.pants,
+      this.characteristics.shirt,
+      this.characteristics.skin,
+      this.characteristics.hatColor,
+    ] = values;
+  
     this.requestUpdate();
   }
 
-  _onCheckboxChange(event, prop) {
-    const checkbox = event.target;
-    this.characteristics = {
-      ...this.characteristics,
-      [prop]: checkbox.checked,
-    };
+  _generateSeed() {
+    const { accessories, base, leg, face, faceItem, hair, pants, shirt, skin, hatColor } = this.characteristics;
+    this.characteristics.seed = `${accessories}${base}${leg}${face}${faceItem}${hair}${pants}${shirt}${skin}${hatColor}`;
+  }
+
+  _updateSetting(key, value) {
+    this.characteristics = { ...this.characteristics, [key]: value };
+    this._generateSeed();
+    this.requestUpdate();
+  }
+
+  _generateLink() {
+    const baseUrl = window.location.href.split("?")[0];
+    const params = new URLSearchParams({ seed: this.characteristics.seed }).toString();
+    const shareLink = `${baseUrl}?${params}`;
+  
+    navigator.clipboard.writeText(shareLink).then(
+      () => this._showNotification("Link copied!"),
+      (err) => this._showNotification(`Error: ${err}`)
+    );
+  }
+
+  _showNotification(message) {
+    const notification = this.shadowRoot.getElementById("notification");
+    notification.textContent = message;
+    notification.classList.add("show");
+
+    setTimeout(() => {
+      notification.classList.remove("show");
+    }, 2000);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.has("seed")) {
+      this.characteristics.seed = params.get("seed");
+      this._applySeed();
+    }
     this.requestUpdate();
   }
 
